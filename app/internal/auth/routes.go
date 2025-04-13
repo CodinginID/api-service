@@ -10,4 +10,6 @@ func RegisterAuthRoutes(router fiber.Router, db *gorm.DB) {
 
 	router.Post("/register", handler.Register)
 	router.Post("/login", handler.Login)
+	router.Get("/detail", handler.GetUserDetailByUsername)
+	router.Get("/users/after", handler.GetUsersAfterDate)
 }

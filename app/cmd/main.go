@@ -9,6 +9,7 @@ import (
 
 	"github.com/CodinginID/api-service/config"
 	"github.com/CodinginID/api-service/internal/auth"
+	"github.com/CodinginID/api-service/internal/bank"
 	"github.com/CodinginID/api-service/internal/cart"
 	"github.com/CodinginID/api-service/internal/middleware"
 	"github.com/CodinginID/api-service/internal/order"
@@ -40,7 +41,13 @@ func main() {
 
 	// Init Route Groups
 	api := app.Group("/api/v1")
+
 	auth.RegisterAuthRoutes(api.Group("/auth"), database)
+
+	bankGroup := api.Group("/bank")
+	// bankGroup.Use(middleware.JWTProtected())
+	bank.RegisterBankRoutes(bankGroup, database)
+
 	productGroup := api.Group("/products")
 	productGroup.Use(middleware.JWTProtected())
 	product.RegisterProductRoutes(productGroup, database)

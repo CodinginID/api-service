@@ -52,3 +52,27 @@ func (h *AuthHandler) Login(c *fiber.Ctx) error {
 
 	return c.JSON(fiber.Map{"token": token})
 }
+
+func (h *AuthHandler) GetUserDetailByUsername(c *fiber.Ctx) error {
+	username := c.Query("username")
+	user, err := h.service.GetUserDetailByUsername(username)
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
+	}
+
+	return c.JSON(user)
+}
+
+func (h *AuthHandler) GetUsersAfterDate(c *fiber.Ctx) error {
+	date := c.Query("date")
+	if date == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Date query parameter is required"})
+	}
+
+	users, err := h.service.GetUsersAfterDate(date)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
+	}
+
+	return c.JSON(users)
+}
