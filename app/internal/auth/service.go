@@ -29,6 +29,14 @@ func (s *authService) Register(username, email, password string) error {
 		return err
 	}
 
+	// Check if user already exists
+	existingUser, err := s.repo.GetUserByEmail(email)
+	if err == nil && existingUser != nil {
+		return errors.New("user already exists")
+	}
+
+	// Create new user
+
 	user := &User{
 		Username:  username,
 		Email:     email,

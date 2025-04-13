@@ -1,0 +1,8 @@
+📝 Keterangan Target:
+make run: jalanin server Go
+
+make tidy: rapihin dependencies
+
+make up: start docker (Postgres, dll)
+
+make down: stop docker
