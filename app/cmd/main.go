@@ -41,6 +41,7 @@ func main() {
 	// Init Route Groups
 	api := app.Group("/api/v1")
 	auth.RegisterAuthRoutes(api.Group("/auth"), database)
+	
 	productGroup := api.Group("/products")
 	productGroup.Use(middleware.JWTProtected())
 	product.RegisterProductRoutes(productGroup, database)
