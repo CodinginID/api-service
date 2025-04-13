@@ -2,13 +2,12 @@ package main
 
 import (
 	"log"
-	"os"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger" // Correct import for Fiber's logger
-	"github.com/joho/godotenv"
 
+	"github.com/CodinginID/api-service/config"
 	"github.com/CodinginID/api-service/internal/auth"
 	"github.com/CodinginID/api-service/internal/cart"
 	"github.com/CodinginID/api-service/internal/middleware"
@@ -18,13 +17,12 @@ import (
 )
 
 func main() {
-	// Load .env
-	if err := godotenv.Load(); err != nil {
-		log.Println("No .env file found, continuing...")
-	}
 
+	cfg := config.LoadConfig()
 	// Init DB
-	database, err := db.InitPostgres()
+	database, err := db.InitPostgres(cfg.DBHost, cfg.DBUser, cfg.DBPassword, cfg.DBName, cfg.DBPort)
+
+	// Check if the database connection was successful
 	if err != nil {
 		log.Fatal("Database connection failed:", err)
 	}
@@ -56,7 +54,7 @@ func main() {
 	order.RegisterOrderRoutes(orderGroup, database)
 
 	// Start Server
-	port := os.Getenv("PORT")
+	port := cfg.Port
 	if port == "" {
 		port = "8080"
 	}

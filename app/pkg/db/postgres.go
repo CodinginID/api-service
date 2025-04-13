@@ -2,25 +2,27 @@ package db
 
 import (
 	"fmt"
-	"os"
+	"log"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-func InitPostgres() (*gorm.DB, error) {
+func InitPostgres(host string, user string, password string, dbname string, port string) (*gorm.DB, error) {
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_USER"),
-		os.Getenv("DB_PASSWORD"),
-		os.Getenv("DB_NAME"),
-		os.Getenv("DB_PORT"),
+		host,
+		user,
+		password,
+		dbname,
+		port,
 	)
+
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return nil, err
 	}
-
+	// Logging success with Fiber's logger
+	log.Println("Successfully connected to the database")
 	return db, nil
 }
