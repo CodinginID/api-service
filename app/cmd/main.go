@@ -14,6 +14,7 @@ import (
 	"github.com/CodinginID/api-service/internal/middleware"
 	"github.com/CodinginID/api-service/internal/order"
 	"github.com/CodinginID/api-service/internal/product"
+	"github.com/CodinginID/api-service/internal/report"
 	"github.com/CodinginID/api-service/pkg/db"
 )
 
@@ -28,7 +29,8 @@ func main() {
 		log.Fatal("Database connection failed:", err)
 	}
 
-	database.AutoMigrate(&auth.User{})
+	db.RunAutoMigration(database)
+	// database.AutoMigrate(&auth.User{})
 
 	// Init Fiber App
 	app := fiber.New()
@@ -59,6 +61,10 @@ func main() {
 	orderGroup := api.Group("/order")
 	orderGroup.Use(middleware.JWTProtected())
 	order.RegisterOrderRoutes(orderGroup, database)
+
+	reportGroup := api.Group("/report")
+	reportGroup.Use(middleware.JWTProtected())
+	report.RegisterReportRoutes(reportGroup, database)
 
 	// Start Server
 	port := cfg.Port

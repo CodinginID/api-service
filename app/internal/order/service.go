@@ -59,8 +59,10 @@ func (s *orderService) Checkout(userID uint) (*Order, error) {
 
 	// 3. Save order
 	order := &Order{
-		UserID:     userID,
-		TotalPrice: total,
+		CustomerID: userID,
+		ProductID:  orderItems[0].ProductID, // Assuming the first product in the order
+		OrderDate:  time.Now(),
+		Amount:     total,
 		CreatedAt:  time.Now(),
 		Items:      orderItems,
 	}
