@@ -6,8 +6,10 @@ import (
 
 type Order struct {
 	ID         uint        `gorm:"primaryKey" json:"id"`
-	UserID     uint        `json:"user_id"`
-	TotalPrice float64     `json:"total_price"`
+	CustomerID uint        `json:"customer_id"`
+	ProductID  uint        `json:"product_id"`
+	OrderDate  time.Time   `json:"order_date"`
+	Amount     float64     `json:"amount"`
 	CreatedAt  time.Time   `json:"created_at"`
 	Items      []OrderItem `gorm:"foreignKey:OrderID" json:"items"`
 }

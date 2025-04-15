@@ -1,0 +1,37 @@
+
+Soal Nomor 5 - Refactor Layanan Monolitik menjadi Microservices
+
+Masalah:
+Layanan monolitik menangani banyak tanggung jawab (autentikasi, upload file, pemrosesan data pengguna), lambat dan sulit dipelihara.
+
+Solusi Refactor:
+
+1. Identifikasi Domain:
+   - Pisahkan menjadi beberapa layanan: Auth Service, File Service, User Service
+
+2. Ekstraksi Bertahap:
+   - Pisahkan layanan satu per satu (Auth → File → User)
+
+3. Gunakan API Gateway:
+   - Menyatukan endpoint berbagai layanan
+   - Menyediakan middleware dan menjaga compatibility
+
+4. Gunakan Message Queue:
+   - Untuk komunikasi async antar layanan (RabbitMQ, Kafka, Redis Stream)
+
+5. Database Terpisah:
+   - Idealnya setiap layanan punya DB sendiri
+   - Bisa mulai dengan shared DB dan migrasi bertahap
+
+6. Compatibility Masa Transisi:
+   - Gunakan Adapter/Fascade API
+   - Pertahankan kontrak API (versi: /api/v1)
+   - Gunakan deployment strategi: Canary, Blue-Green
+   - Tambah monitoring & logging
+
+7. Testing & Monitoring:
+   - Unit, integration test
+   - Monitoring stack: Prometheus, Grafana, ELK, OpenTelemetry
+
+Kesimpulan:
+Refactoring harus dilakukan bertahap dengan jaga kompatibilitas, monitoring ketat, dan dokumentasi yang jelas.

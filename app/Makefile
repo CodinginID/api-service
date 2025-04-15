@@ -4,6 +4,7 @@ PORT = 3000
 .PHONY: run build tidy fmt lint test migrate up down
 
 run:
+	@clear
 	go run cmd/main.go	
 
 build:
